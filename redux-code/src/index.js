@@ -3,25 +3,27 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {createStore} from 'redux';
+import {applyMiddleware, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import { combineReducers } from 'redux'
 import CounterReducer from './reducer/CounterReducer.js';
 import ColorReducer from './reducer/ColorReducer.js';
-
+import {myLogger} from './middleware/myLogger';
+import ColorPicker from './ColorPicker/ColorPicker.js';
+import MyColorsReducer from './ColorPicker/MyColorsReducer.js';
 // const rootReducers =  combineReducers({
 //   counter:CounterReducer,
 //   color:ColorReducer
 // })
 
 console.log("Inside Index");
-const store = createStore(ColorReducer);
+const store = createStore(MyColorsReducer,applyMiddleware(myLogger));
 console.log("Inside Index: Store Created");
 ReactDOM.render(
   
   // Provide the store to Application
   <Provider store = {store}>
-  
+    <ColorPicker />
     <App />
   </Provider>,
   document.getElementById('root')

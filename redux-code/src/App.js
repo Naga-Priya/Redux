@@ -10,62 +10,41 @@ import { yellow } from './action/ColorActions';
 import {useDispatch} from 'react-redux';
 import { useEffect, useState } from 'react';
 import {connect} from 'react-redux';
-
+import User from './testUser/User';
 
 function App(props) {
-  const [color,setColor] = useState('White');
-  console.log("Inside App");
-  const counter = useSelector((data)=>{
-    return data});
-  // const color = useSelector((data)=>{
-  //     return data});
-  
-  const colval = useSelector((data)=>{
-         return data.color});
-  const dispatch = useDispatch();
-  
-  // useEffect(()=>{
-  //   console.log(props);
-  // },[color])
-  const handleChange =(e)=>{
-    // setColor(e.target.value);
-    dispatch({
-      type:'CHANGE_COLOR',
-      payload:e.target.value
-    })
+
+  const [user,setUser] = useState(null);
+  const [error,setError] = useState('');
+
+  window.fetch = jest.fn(() =>{
+    const user = {name: "Priya", email:"test@test.com"}
+    return Promise.resolve ({
+      json: () =>Promise.resolve(user),
+    });
+  });
+
+  useEffect(async ()=>{
+    return fetch("https://jsonplaceholder.typicode.com/users/1")
+    .then(response => response.json())
+    .then(user =>setUser(user))
+    .catch((error) => setError(error.message)); 
+  },[]);
+  if(error){
+    return <span>{error}</span>
   }
-  
   return (
     <div className="App">
-      {/* <h1>Counter: {counter}</h1> */}
-      {/* <button onClick={()=>dispatch(increment())}>INCREMENT</button>
-      <button onClick={()=>dispatch(decrement())}>DECREMENT</button> */}
-      <h1>My Favorite color is {color},{colval}</h1>
-      {/* <input type="radio" name="colors" id="red" onClick={()=>dispatch(red())}/>Red
-      <input type="radio" name="colors" id="blue" onClick={()=>dispatch(blue())}/>Blue
-      <input type="radio" name="colors" id="green" onClick={()=>dispatch(green())}/>Green
-      <input type="radio" name="colors" id="yellow" onClick={()=>dispatch(yellow())}/>Yellow */}
-      <input type="radio" name="colors" value="red" onClick={handleChange}/>Red
-      <input type="radio" name="colors" value="blue" onClick={handleChange}/>Blue
-      <input type="radio" name="colors" value="green" onClick={handleChange}/>Green
-      <input type="radio" name="colors" value="yellow" onClick={handleChange}/>Yellow
-
+    <h1>Hello World</h1>
+    <ul className='animals'>
+      <li>Lion</li>
+      <li>Elephant</li>
+      <li>Horse</li>
+      <li>Cat</li>
+    </ul>
+  {user ? <User user={user}/>:<span>Loading...</span>}
     </div>
   );
 }
 
-// const mapStateToProps = (state) => {
-//   return{
-//     data: state
-//   }
-// };
-// const mapDispatchToProps = dispatch =>{
-//     return{
-//       changeColor: (color) => dispatch ({
-//         type: 'CHANGE_COLOR', payload:color
-//       })
-//     }
-//   }
-
-// export default connect(mapStateToProps,mapDispatchToProps)(App);
 export default App;

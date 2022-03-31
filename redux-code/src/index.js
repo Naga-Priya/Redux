@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -17,6 +18,8 @@ import Posts from './AxiosMW/Posts';
 import thunk from 'redux-thunk';
 import postReducer from './AxiosMW/postReducer';
 import {composeWithDevTools} from 'redux-devtools-extension';
+import MyBudget from './FinalDemo/MyBudget';
+import ExpenseReducer from './FinalDemo/ExpenseReducer.js';
 // const rootReducers =  combineReducers({
 //   counter:CounterReducer,
 //   color:ColorReducer
@@ -31,8 +34,11 @@ const rootReducer = combineReducers({
 })
 const devTools = composeWithDevTools(applyMiddleware(myLogger,myLogger2));
 //const store = createStore(MyColorsReducer,applyMiddleware(thunk));
-//const store = createStore(postReducer,applyMiddleware(thunk));
+// const store = createStore(postReducer,applyMiddleware(thunk));
 const store = createStore(ColorReducer,devTools);
+
+// const store = createStore(ExpenseReducer);
+
 // const store = createStore(rootReducer,applyMiddleware(logger));
 console.log("Inside Index: Store Created");
 ReactDOM.render(
@@ -41,6 +47,7 @@ ReactDOM.render(
   <Provider store = {store}>
     {/* <ColorPicker /> */}
     <App />
+    {/* <MyBudget/> */}
     {/* <Posts /> */}
   </Provider>,
   document.getElementById('root')

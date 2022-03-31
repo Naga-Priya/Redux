@@ -7,20 +7,28 @@ function ColorPicker(props) {
     
     const dispatch = useDispatch();
     let MyColors = useSelector((state)=> {return state.myColors});
+    
+    //Mapping the array in store to state variable works for arrays
+    //const MyColors = useSelector((state)=> state.myColors.map((x)=>x));
+    
     // MyColors.map((value)=>{return <p> {value} </p>});
 
-    function displayColors(){
-        return (
-            <>
-            {MyColors}
-            </>
-        )
-    }
+    // function displayColors(){
+    //     return (
+    //         <>
+    //         {MyColors}
+    //         </>
+    //     )
+    // }
 
-    useEffect(() => {
-        console.log("Use Effect Called");
-        dispatch({type:''});
-      }, [MyColors])
+    // useEffect(() => {
+    //     console.log("Use Effect Called: ",MyColors);
+    //     dispatch({
+    //         type:'',
+    //         payload:''
+    //     })
+    //   },[MyColors])
+
 
     const handleChange =(e)=>{
         //setColor(e.target.value);
@@ -42,10 +50,13 @@ function ColorPicker(props) {
     return (
         <div className='colorPicker'>
             <h2>Color Picker Component</h2>
-            
-            <h3>My Favorite Colors are: </h3>
+            {MyColors}
+            <h3>My Favorite Colors are:</h3>
+            {/* <ol>
+            {MyColors}
+            </ol> */}
             <ol>
-            {MyColors.map((value)=>{return <li key={value}> {value} </li>})}
+            {MyColors.map((value)=>{return <li> {value} </li>})}
             </ol>
             <label>
                 <input type="checkbox" id="Red" value="Red" onClick={handleChange}/>

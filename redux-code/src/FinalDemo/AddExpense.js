@@ -1,8 +1,10 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import ExpenseList from './ExpenseList.js';
 
 function AddExpense(props) {
 
+    let idGen = 0;
     const dispatch = useDispatch();
 
     const addItems = ()=>{
@@ -13,8 +15,9 @@ function AddExpense(props) {
             alert("Enter Expense Amount");
         }
         else {
-            let newItem = {name:document.getElementById("expName").value,
-            value:Number(document.getElementById("expCost").value)}
+            let newItem = {id:idGen++,
+                            name:document.getElementById("expName").value,
+                            cost:Number(document.getElementById("expCost").value)}
             //alert(JSON.parse(JSON.stringify(newItem)));
             alert(JSON.stringify(newItem));
             console.log(newItem);
@@ -27,6 +30,7 @@ function AddExpense(props) {
 
     return (
         <div>
+            
             <h3>Add Expense</h3>
             <div className="container">
             <div className="row">
@@ -41,7 +45,7 @@ function AddExpense(props) {
                 <input type="number" id="expCost" className="form-control" />
                 </div>
             </div>
-            
+            <div className='row'><br></br></div>
             <div className='row'>
             <div className="col-2">
             <button type="button" className="btn btn-primary" onClick={addItems}>Save</button>

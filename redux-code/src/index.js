@@ -35,9 +35,9 @@ const rootReducer = combineReducers({
 const devTools = composeWithDevTools(applyMiddleware(myLogger,myLogger2));
 //const store = createStore(MyColorsReducer,applyMiddleware(thunk));
 // const store = createStore(postReducer,applyMiddleware(thunk));
-const store = createStore(ColorReducer,devTools);
+// const store = createStore(ColorReducer,devTools);
 
-// const store = createStore(ExpenseReducer);
+const store = createStore(ExpenseReducer);
 
 // const store = createStore(rootReducer,applyMiddleware(logger));
 console.log("Inside Index: Store Created");
@@ -46,8 +46,8 @@ ReactDOM.render(
   // Provide the store to Application
   <Provider store = {store}>
     {/* <ColorPicker /> */}
-    <App />
-    {/* <MyBudget/> */}
+    {/* <App /> */}
+    <MyBudget/>
     {/* <Posts /> */}
   </Provider>,
   document.getElementById('root')

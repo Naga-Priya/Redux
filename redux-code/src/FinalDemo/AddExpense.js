@@ -19,7 +19,7 @@ function AddExpense(props) {
                             name:document.getElementById("expName").value,
                             cost:Number(document.getElementById("expCost").value)}
             //alert(JSON.parse(JSON.stringify(newItem)));
-            alert(JSON.stringify(newItem));
+            // alert(JSON.stringify(newItem));
             console.log(newItem);
             dispatch({
                 type:'ADD_ITEM',
@@ -32,7 +32,7 @@ function AddExpense(props) {
         <div>
             
             <h3>Add Expense</h3>
-            <div className="container">
+            
             <div className="row">
                 <div className="col-6">
                 
@@ -51,7 +51,7 @@ function AddExpense(props) {
             <button type="button" className="btn btn-primary" onClick={addItems}>Save</button>
             </div>
             </div>
-            </div>
+            
         </div>
     );
 }

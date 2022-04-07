@@ -1,11 +1,13 @@
 import React, { useEffect,useState } from 'react';
-import {useSelector} from 'react-redux';
+import {useSelector,useDispatch} from 'react-redux';
+import styles from './SearchBar.module.css';
 
 function SearchBar(props) {
     const expenses = useSelector((store)=>store.items);
     const [searchInput,setSearchInput] = useState('');
     const [searchOutput,setSearchOutput] = useState([]);
 
+    const dispatch = useDispatch();
     useEffect(()=>{
         if(searchInput==''){
             setSearchOutput([]);
@@ -33,22 +35,71 @@ function SearchBar(props) {
             document.getElementById(searchOutput[0].name).autofocus = true;
         }
     }
+    const addFilter = () => {
+        dispatch({
+            type:'ADD_FILTER',
+            payload:searchInput
+          })
+          setSearchOutput([]);
+    }
 
-    return (
-        <div>
-            <input type="search" 
-            onKeyDown={(e)=>e.keyCode==40?setListFocus():console.log("Do Nothing")}
-            onChange={(e)=>setSearchInput(e.target.value)} value={searchInput} 
-            placeholder="Enter text to search"></input>
-            <ul className="list-group">
-                {searchOutput.map(entry => {return (
-                    <li className="list-unstyled" 
-                    id = {entry.name}
-                    key={entry.name}>{entry.name}</li>
-                )})}
-            </ul>
-        </div>
-    );
+    const searchText = (e) =>{
+        console.log("Clicked: ",e.target.id);
+        setSearchInput(e.target.id);
+        dispatch({
+            type:'ADD_FILTER',
+            payload:searchInput
+          })
+        let elmt=document.getElementById("autocompletelist");
+        elmt.classList.add("hidden");
+        
+    }
+    if (searchOutput.length >0) {
+        return (
+            <div className={styles.autocomplete}>
+                <input type="search" 
+                onKeyDown={(e)=>e.keyCode==40?setListFocus():console.log("Do Nothing")}
+                onChange={(e)=>{document.getElementById("autocompletelist").classList.remove("hidden");
+                            setSearchInput(e.target.value)}} value={searchInput} 
+                placeholder="Enter text to search"></input>
+                <span className='col-1'> </span>
+                <button type="search" className="btn btn-primary btn-sm" onClick={addFilter}>search</button>
+                {/* <ul className="list-group">
+                <li className="list-unstyled" */}
+                
+                <div id="autocompletelist" className={styles.autocompleteitems}>
+                <ul>
+                
+                    {searchOutput.map(entry => {return (
+                        <div >
+                        <li className="list-unstyled" onClick={searchText}
+                        id = {entry.name}
+                        key={entry.name}>
+                            {entry.name}
+                            </li>
+                        </div>
+                    )})}
+                    
+                </ul>
+                </div>
+
+            </div>
+        );
+    }
+    else{
+        return (
+            <div className={styles.autocomplete}>
+                <input type="search" 
+                onKeyDown={(e)=>e.keyCode==40?setListFocus():console.log("Do Nothing")}
+                onChange={(e)=>setSearchInput(e.target.value)} value={searchInput} 
+                placeholder="Enter text to search"></input>
+                <span className='col-1'> </span>
+                <button type="search" className="btn btn-primary" onClick={addFilter}>search</button>
+                {/* <ul className="list-group">
+                <li className="list-unstyled" */}
+            </div>
+        );
+    }
 }
 
 export default SearchBar;

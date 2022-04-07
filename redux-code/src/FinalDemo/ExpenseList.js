@@ -3,39 +3,42 @@ import { useSelector,useDispatch } from 'react-redux';
 
 function ExpenseList(props) {
     const expenses = useSelector((state)=>{return (state.items)});
+    const filterTxt = useSelector((state)=>{return (state.filterTxt).toLowerCase()});
     const dispatch = useDispatch();
     // expenses.map(expense => {<li>{expense.name}</li>});
     console.log(expenses);
 
-    const deleteItem= (id)=>{
-        console.log("Delete Item: ", id);
+    const deleteItem= ({expense})=>{
+        console.log("Delete Item: ", {expense});
         dispatch({
             type:'DEL_ITEM',
-            payload:id
+            payload:expense
           })
     }
 
     return (
-        <div className='col-12'>
+        <div className="container">
+        {/* <div className='col-12'> */}
             <ul className="list-group">
-            {expenses.map((expense) => {
+            {expenses.filter(item => item.name.toLowerCase().startsWith(filterTxt)).map((expense) => {
                 return (<ExpenseItem expense={expense}
                                     messenger={deleteItem}/>);
                 })}
             </ul>
             {/* <button onClick={()=>console.log({expenses})}>Click To Log</button> */}
             {/* <ExpenseItem expenses={expenses}/> */}
+        {/* </div> */}
         </div>
     );
 }
 const ExpenseItem = (props)=>{
     const id = props.expense.id;
     return(
-        <li class="list-group-item d-flex justify-content-between align-items-center">
+        <li className="list-group-item d-flex justify-content-between">
             {props.expense.name}
-            <span >{props.expense.cost}</span>
-            <span class="badge badge-primary badge-pill">
-                <button onClick={()=>{props.messenger(id)}}>Del</button>
+            <span className="space">
+                {props.expense.cost}
+                <button className=" round-button" onClick={()=>{props.messenger({...props})}}>Del</button>
             </span>
         </li>
     )

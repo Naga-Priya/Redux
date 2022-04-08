@@ -37,7 +37,7 @@ const ExpenseItem = (props)=>{
         <li className="list-group-item d-flex justify-content-between">
             {props.expense.name}
             <span className="space">
-                {props.expense.cost}
+                ${props.expense.cost}
                 <button className=" round-button" onClick={()=>{props.messenger({...props})}}>Del</button>
             </span>
         </li>

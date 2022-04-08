@@ -20,7 +20,7 @@ function ExpenseList(props) {
         <div className="container">
         {/* <div className='col-12'> */}
             <ul className="list-group">
-            {expenses.filter(item => item.name.toLowerCase().startsWith(filterTxt)).map((expense) => {
+            {expenses.filter(item => item.name.toLowerCase().includes(filterTxt)).map((expense) => {
                 return (<ExpenseItem expense={expense}
                                     messenger={deleteItem}/>);
                 })}

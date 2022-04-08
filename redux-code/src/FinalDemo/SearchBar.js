@@ -6,11 +6,17 @@ function SearchBar(props) {
     const expenses = useSelector((store)=>store.items);
     const [searchInput,setSearchInput] = useState('');
     const [searchOutput,setSearchOutput] = useState([]);
+    const filtertxt = useSelector((store=>store.filterTxt));
 
     const dispatch = useDispatch();
     useEffect(()=>{
         if(searchInput==''){
+            console.log("Empty");
             setSearchOutput([]);
+            dispatch({
+                type:'ADD_FILTER',
+                payload:''
+              })
         }
         else if(expenses.length == 0){
             console.log("List is empty");
@@ -54,13 +60,19 @@ function SearchBar(props) {
         elmt.classList.add("hidden");
         
     }
+    function changeSearchTxt(e){
+        const element = document.getElementById("autocompletelist");
+        if(element.classList.contains("hidden"))
+        element.classList.remove("hidden");
+        setSearchInput(e.target.value)
+    }
+
     if (searchOutput.length >0) {
         return (
             <div className={styles.autocomplete}>
                 <input type="search" 
                 onKeyDown={(e)=>e.keyCode==40?setListFocus():console.log("Do Nothing")}
-                onChange={(e)=>{document.getElementById("autocompletelist").classList.remove("hidden");
-                            setSearchInput(e.target.value)}} value={searchInput} 
+                onChange={changeSearchTxt} value={searchInput} 
                 placeholder="Enter text to search"></input>
                 <span className='col-1'> </span>
                 <button type="search" className="btn btn-primary btn-sm" onClick={addFilter}>search</button>

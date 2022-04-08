@@ -20,10 +20,8 @@ const ExpenseReducer = (state = initialState,action) =>{
             const newItems = newstate.items.filter(item => item.id!==action.payload.id);
             console.log("After Delete: ", newItems);
             newstate.total-=action.payload.cost;
-            newstate.balance=newstate.income+newstate.total;
-            return {...state,
-                    total:newstate.total,
-                    balance:newstate.balance,
+            newstate.balance=newstate.income-newstate.total;;
+            return {...newstate,
                     items:newItems};
         case 'ADD_FILTER':
             return {...state,

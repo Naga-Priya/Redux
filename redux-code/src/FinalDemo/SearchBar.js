@@ -14,6 +14,7 @@ function SearchBar(props) {
         if(searchInput==''){
             console.log("Empty");
             setSearchOutput([]);
+            setActiveSuggestionIndex(-1);
             dispatch({
                 type:'ADD_FILTER',
                 payload:''
@@ -39,8 +40,10 @@ function SearchBar(props) {
             if (e.keyCode === 13) {
                 console.log("Enter Key Pressed");
               //setInput(filteredSuggestions[activeSuggestionIndex]);
-              
-            setSearchInput(searchOutput[activeSuggestionIndex].name);
+              if(activeSuggestionIndex!== -1){
+                  setSearchInput(searchOutput[activeSuggestionIndex].name);
+
+              }
             console.log("Selected: ",searchInput);
                 dispatch({
                     type:'ADD_FILTER',

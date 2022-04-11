@@ -6,7 +6,7 @@ function SearchBar(props) {
     const expenses = useSelector((store)=>store.items);
     const [searchInput,setSearchInput] = useState('');
     const [searchOutput,setSearchOutput] = useState([]);
-    const filtertxt = useSelector((store=>store.filterTxt));
+    const [activeSuggestionIndex,setActiveSuggestionIndex] = useState(0);
 
     const dispatch = useDispatch();
     useEffect(()=>{
@@ -32,14 +32,32 @@ function SearchBar(props) {
             
     },[searchInput]);
 
-    const setListFocus = () =>{
+    const setListFocus = (e) =>{
         console.log("Set List Focus Called");
-        if(searchOutput==''|| searchOutput.length == 0){
-            setSearchOutput([]);
-        }
-        else {
-            document.getElementById(searchOutput[0].name).autofocus = true;
-        }
+            // User pressed the enter key
+            if (e.keyCode === 13) {
+                console.log("Enter Key Pressed");
+            //   setInput(filteredSuggestions[activeSuggestionIndex]);
+            //   setActiveSuggestionIndex(0);
+            //   setShowSuggestions(false);
+            }
+            // User pressed the up arrow
+            else if (e.keyCode === 38) {
+            //   if (activeSuggestionIndex === 0) {
+            //     return;
+            //   }
+        
+            //   setActiveSuggestionIndex(activeSuggestionIndex - 1);
+            console.log("Up arrow pressed");
+            }
+            // User pressed the down arrow
+            else if (e.keyCode === 40) {
+              if (activeSuggestionIndex === searchOutput.length-1) {
+                return;
+              }
+        
+              setActiveSuggestionIndex(activeSuggestionIndex + 1);
+            }
     }
     const addFilter = () => {
         dispatch({
@@ -71,7 +89,7 @@ function SearchBar(props) {
         return (
             <div className={styles.autocomplete}>
                 <input type="search" 
-                onKeyDown={(e)=>e.keyCode==40?setListFocus():console.log("Do Nothing")}
+                onKeyDown={setListFocus}
                 onChange={changeSearchTxt} value={searchInput} 
                 placeholder="Enter text to search"></input>
                 <span className='col-1'> </span>

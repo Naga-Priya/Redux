@@ -6,10 +6,11 @@ function SearchBar(props) {
     const expenses = useSelector((store)=>store.items);
     const [searchInput,setSearchInput] = useState('');
     const [searchOutput,setSearchOutput] = useState([]);
-    const [activeSuggestionIndex,setActiveSuggestionIndex] = useState(0);
+    const [activeSuggestionIndex,setActiveSuggestionIndex] = useState(-1);
 
     const dispatch = useDispatch();
     useEffect(()=>{
+        console.log('Use effect called');
         if(searchInput==''){
             console.log("Empty");
             setSearchOutput([]);
@@ -26,37 +27,49 @@ function SearchBar(props) {
             
             let searchArr = [ ...expenses];
             console.log(searchArr,searchInput);
-            setSearchOutput(searchArr.filter((expense) => expense.name.toLowerCase().startsWith(searchInput.toLowerCase())));
+            setSearchOutput(searchArr.filter((expense) => expense.name.toLowerCase().includes(searchInput.toLowerCase())));
             console.log(searchOutput);
         }
             
-    },[searchInput]);
+    },[searchInput,activeSuggestionIndex]);
 
     const setListFocus = (e) =>{
         console.log("Set List Focus Called");
             // User pressed the enter key
             if (e.keyCode === 13) {
                 console.log("Enter Key Pressed");
-            //   setInput(filteredSuggestions[activeSuggestionIndex]);
-            //   setActiveSuggestionIndex(0);
-            //   setShowSuggestions(false);
+              //setInput(filteredSuggestions[activeSuggestionIndex]);
+              
+            setSearchInput(searchOutput[activeSuggestionIndex].name);
+            console.log("Selected: ",searchInput);
+                dispatch({
+                    type:'ADD_FILTER',
+                    payload:searchInput
+                })
+                let elmt=document.getElementById("autocompletelist");
+                elmt.classList.add("hidden");
+              setActiveSuggestionIndex(-1);
+              //setShowSuggestions(false);
             }
             // User pressed the up arrow
             else if (e.keyCode === 38) {
-            //   if (activeSuggestionIndex === 0) {
-            //     return;
-            //   }
+              if (activeSuggestionIndex === 0) {
+                return;
+              }
         
-            //   setActiveSuggestionIndex(activeSuggestionIndex - 1);
+              setActiveSuggestionIndex(activeSuggestionIndex - 1);
             console.log("Up arrow pressed");
             }
             // User pressed the down arrow
             else if (e.keyCode === 40) {
+                console.log("Down Arrow");
               if (activeSuggestionIndex === searchOutput.length-1) {
+                console.log('if: ',activeSuggestionIndex);
                 return;
               }
-        
+              
               setActiveSuggestionIndex(activeSuggestionIndex + 1);
+              console.log('Out: ',activeSuggestionIndex+1);
             }
     }
     const addFilter = () => {
@@ -100,7 +113,20 @@ function SearchBar(props) {
                 <div id="autocompletelist" className={styles.autocompleteitems}>
                 <ul>
                 
-                    {searchOutput.map(entry => {return (
+                    {searchOutput.map((entry,index) => {
+                        
+                        if(index === activeSuggestionIndex)
+                        return (
+                            <div >
+                            <li className={styles.autocompleteActive} onClick={searchText}
+                            id = {entry.name}
+                            key={entry.name}>
+                                {entry.name}
+                                </li>
+                            </div>
+                        )
+                        else
+                        return (
                         <div >
                         <li className="list-unstyled" onClick={searchText}
                         id = {entry.name}
